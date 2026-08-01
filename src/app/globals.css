@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbf3e2;
+  --surface: #ffffff;
+  --surface-muted: #f5ead6;
+  --foreground: #2b1d10;
+  --border: rgb(43 29 16 / 0.12);
+}
+
+.dark {
+  --background: #0b0a08;
+  --surface: #17130d;
+  --surface-muted: #131110;
+  --foreground: #f2cf8e;
+  --border: rgb(242 207 142 / 0.16);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-border: var(--border);
+  --font-sans: var(--font-armenian);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes card-float {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-4px, -6px, 0);
+    }
+  }
+
+  .package-card {
+    animation: card-float 5s ease-in-out infinite alternate;
+  }
+
+  .package-card:nth-child(2) {
+    animation-delay: -1.7s;
+  }
+
+  .package-card:nth-child(3) {
+    animation-delay: -3.4s;
+  }
+
+  @keyframes logo-shine {
+    0% {
+      transform: translateX(-150%) skewX(-20deg);
+    }
+    60%,
+    100% {
+      transform: translateX(150%) skewX(-20deg);
+    }
+  }
+
+  .logo-shine {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.45),
+      transparent
+    );
+    transform: translateX(-150%) skewX(-20deg);
+    animation: logo-shine 3.5s ease-in-out infinite;
+  }
 }

@@ -1,0 +1,34 @@
+import Link from "next/link";
+import { QRCodeSVG } from "qrcode.react";
+import { packages } from "@/data/packages";
+import PackageCard from "@/components/PackageCard";
+import { SITE_URL } from "@/lib/constants";
+
+export default function Packages() {
+  return (
+    <section id="packages" className="mx-auto w-full max-w-6xl px-6 py-20">
+      <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="text-center sm:text-left">
+          <h2 className="text-3xl font-bold sm:text-4xl">Փաթեթներ</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-foreground/70 sm:mx-0">
+            Ընտրեք ձեր միջոցառմանը հարմար փաթեթը։
+          </p>
+        </div>
+
+        <Link
+          href="/packages"
+          className="flex shrink-0 flex-col items-center gap-1.5 rounded-xl border border-black/10 bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <QRCodeSVG value={`${SITE_URL}/packages`} size={64} level="M" />
+          <span className="text-[11px] text-foreground/50">Սկանավորեք</span>
+        </Link>
+      </div>
+
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {packages.map((pkg) => (
+          <PackageCard key={pkg.id} pkg={pkg} />
+        ))}
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p src/app/packages/\\\\[id\\\\])",
+      "Bash(node -e ' *)",
+      "Bash(tasklist)",
+      "Bash(curl -s http://localhost:3000/packages/standard -o /tmp/standard.html -w \"default: %{http_code}\\\\n\")",
+      "Bash(curl -s \"http://localhost:3000/packages/standard?i1=s2&i2=m2\" -o /tmp/standard_selected.html -w \"with-selection: %{http_code}\\\\n\")"
+    ],
+    "additionalDirectories": [
+      "D:\\levi\\bayazet_hall\\app_next\\src\\app\\packages"
+    ]
+  }
+}
