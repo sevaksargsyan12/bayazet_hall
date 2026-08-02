@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -30,6 +30,27 @@ export default function Lightbox({
 }) {
   const mounted = useMounted();
   const canNavigate = Boolean(images && images.length > 1 && onNavigate);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start || !canNavigate) return;
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    const SWIPE_THRESHOLD = 50;
+
+    if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
+      onNavigate?.(deltaX < 0 ? 1 : -1);
+    }
+  };
 
   useEffect(() => {
     if (!image) return;
@@ -64,12 +85,14 @@ export default function Lightbox({
       aria-modal="true"
       aria-label={image.alt}
       onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <button
         type="button"
         onClick={onClose}
         aria-label="Փակել"
-        className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+        className="absolute right-5 top-5 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
       >
         <X className="h-6 w-6" aria-hidden="true" />
       </button>
@@ -83,7 +106,7 @@ export default function Lightbox({
               onNavigate?.(-1);
             }}
             aria-label="Նախորդ նկարը"
-            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
           >
             <ChevronLeft className="h-6 w-6" aria-hidden="true" />
           </button>
@@ -94,7 +117,7 @@ export default function Lightbox({
               onNavigate?.(1);
             }}
             aria-label="Հաջորդ նկարը"
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
           >
             <ChevronRight className="h-6 w-6" aria-hidden="true" />
           </button>
