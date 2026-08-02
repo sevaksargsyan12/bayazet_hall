@@ -3,7 +3,7 @@ import GalleryGrid from "@/components/GalleryGrid";
 
 export default function Gallery() {
   return (
-    <section id="gallery" className="bg-surface-muted py-20">
+    <section id="gallery" className="bg-surface-muted py-20 scroll-mt-24">
       <div className="mx-auto w-full max-w-6xl px-6">
         <h2 className="text-center text-3xl font-bold sm:text-4xl">
           Պատկերասրահ

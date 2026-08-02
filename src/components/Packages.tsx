@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
-import { packages } from "@/data/packages";
-import PackageCard from "@/components/PackageCard";
+import PackagesGrid from "@/components/PackagesGrid";
 import { SITE_URL } from "@/lib/constants";
 
 export default function Packages() {
   return (
-    <section id="packages" className="mx-auto w-full max-w-6xl px-6 py-20">
+    <section id="packages" className="mx-auto w-full max-w-6xl px-6 py-20 scroll-mt-24">
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div className="text-center sm:text-left">
           <h2 className="text-3xl font-bold sm:text-4xl">Փաթեթներ</h2>
@@ -24,11 +23,7 @@ export default function Packages() {
         </Link>
       </div>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {packages.map((pkg) => (
-          <PackageCard key={pkg.id} pkg={pkg} />
-        ))}
-      </div>
+      <PackagesGrid />
     </section>
   );
 }

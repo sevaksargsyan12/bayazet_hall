@@ -10,22 +10,21 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
 
   return (
     <>
-      <div className="mt-12 columns-2 gap-4 sm:columns-3 lg:columns-4">
+      <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {images.map((img, i) => (
           <button
             key={img.src}
             type="button"
             onClick={() => setLightboxIndex(i)}
-            className="group mb-4 block w-full break-inside-avoid overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+            className="group relative aspect-square overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
             aria-label={`Ցուցադրել «${img.alt}» նկարը մեծացված`}
           >
             <Image
               src={img.src}
               alt={img.alt}
-              width={img.width}
-              height={img.height}
+              fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </button>
         ))}

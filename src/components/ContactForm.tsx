@@ -72,7 +72,7 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="mx-auto mt-12 flex max-w-2xl flex-col items-center rounded-2xl border border-border bg-surface p-10 text-center shadow-sm">
+      <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-border bg-surface p-10 text-center shadow-sm">
         <CheckCircle2 className="h-10 w-10 text-amber-500" aria-hidden="true" />
         <p className="mt-4 text-lg font-semibold">
           Շնորհակալություն, ձեր հայտն ուղարկվել է։
@@ -95,7 +95,7 @@ export default function ContactForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="mx-auto mt-12 max-w-2xl rounded-2xl border border-border bg-surface p-8 shadow-sm"
+      className="rounded-2xl border border-border bg-surface p-8 shadow-sm"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <Field

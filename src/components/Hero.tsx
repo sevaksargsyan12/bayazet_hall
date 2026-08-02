@@ -42,7 +42,7 @@ export default function Hero() {
     if (isPaused || reducedMotion) return;
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % slides.length);
-    }, 5000);
+    }, 3500);
     return () => clearInterval(id);
   }, [isPaused, reducedMotion]);
 
@@ -71,6 +71,7 @@ export default function Hero() {
           />
         ))}
         <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-black/20" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-black" />
       </div>
 
       <div className="mx-auto max-w-3xl px-6 text-center text-white">
@@ -84,7 +85,7 @@ export default function Hero() {
         type="button"
         onClick={prev}
         aria-label="Նախորդ նկարը"
-        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white transition-colors hover:bg-black/50"
+        className="absolute left-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-black/30 p-2 text-white transition-colors hover:bg-black/50 sm:block"
       >
         <ChevronLeft className="h-6 w-6" aria-hidden="true" />
       </button>
@@ -92,7 +93,7 @@ export default function Hero() {
         type="button"
         onClick={next}
         aria-label="Հաջորդ նկարը"
-        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white transition-colors hover:bg-black/50"
+        className="absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-black/30 p-2 text-white transition-colors hover:bg-black/50 sm:block"
       >
         <ChevronRight className="h-6 w-6" aria-hidden="true" />
       </button>

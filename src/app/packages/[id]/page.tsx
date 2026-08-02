@@ -77,6 +77,10 @@ export default async function PackageDetailPage({
 
             <h1 className="text-3xl font-bold sm:text-4xl">{pkg.name}</h1>
             <p className="mt-2 text-foreground/60">{pkg.description}</p>
+            <p className="mt-4 text-sm text-foreground/60">
+              Ընտրեք Ձեզ նախընտրելի տարբերակները և կիսվեք հղումով մեր
+              մենեջերի հետ։
+            </p>
 
             <div className="mt-6 flex items-baseline gap-1">
               <span className="text-4xl font-extrabold">

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PackageCard from "@/components/PackageCard";
-import { packages } from "@/data/packages";
+import PackagesGrid from "@/components/PackagesGrid";
 
 export const metadata: Metadata = {
   title: "Փաթեթներ — Bayazet Hall",
@@ -22,11 +21,7 @@ export default function PackagesPage() {
             Ընտրեք ձեր միջոցառմանը հարմար փաթեթը։
           </p>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {packages.map((pkg) => (
-              <PackageCard key={pkg.id} pkg={pkg} />
-            ))}
-          </div>
+          <PackagesGrid />
         </section>
       </main>
       <Footer />
