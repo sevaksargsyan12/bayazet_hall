@@ -1,15 +1,20 @@
 import { MapPin, Phone, Users } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 
-export default function Contact() {
+export default async function Contact() {
+  const siteSettings = await getSiteSettings();
+
   return (
     <section
       id="contact"
       className="mx-auto w-full max-w-6xl px-6 py-20 scroll-mt-24"
     >
-      <h2 className="text-center text-3xl font-bold sm:text-4xl">Կապ</h2>
+      <h2 className="text-center text-3xl font-bold sm:text-4xl">
+        {siteSettings.contactHeading}
+      </h2>
       <p className="mx-auto mt-3 max-w-2xl text-center text-foreground/70">
-        Կապվեք մեզ հետ ամրագրման կամ հարցերի համար։
+        {siteSettings.contactSubtitle}
       </p>
 
       <div className="mx-auto mt-12 grid max-w-5xl gap-8 lg:grid-cols-2">
@@ -21,15 +26,15 @@ export default function Contact() {
                 className="mt-0.5 h-5 w-5 shrink-0 text-amber-500"
                 aria-hidden="true"
               />
-              <span>Գավառ, Սայադյան 112/2</span>
+              <span>{siteSettings.contactAddress}</span>
             </li>
             <li className="flex items-start gap-3">
               <Phone
                 className="mt-0.5 h-5 w-5 shrink-0 text-amber-500"
                 aria-hidden="true"
               />
-              <a href="tel:+374917774774" className="hover:underline">
-                +374 91 774 774
+              <a href={`tel:${siteSettings.contactPhone}`} className="hover:underline">
+                {siteSettings.contactDisplayPhone}
               </a>
             </li>
             <li className="flex items-start gap-3">
@@ -37,7 +42,7 @@ export default function Contact() {
                 className="mt-0.5 h-5 w-5 shrink-0 text-amber-500"
                 aria-hidden="true"
               />
-              <span>Նախատեսված է մինչև 600 անձի համար</span>
+              <span>{siteSettings.contactCapacityNote}</span>
             </li>
           </ul>
         </div>

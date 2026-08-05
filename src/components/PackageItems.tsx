@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Link2 } from "lucide-react";
+import { Check, Link2, Lock } from "lucide-react";
 import DishImage from "@/components/DishImage";
 import Lightbox from "@/components/Lightbox";
 import type { PackageItem } from "@/data/packages";
@@ -13,12 +13,14 @@ export default function PackageItems({
   packageId,
   compact = false,
   initialSelections,
+  locked = false,
   showShareLink = false,
 }: {
   items: PackageItem[];
   packageId: string;
   compact?: boolean;
   initialSelections?: Record<string, string>;
+  locked?: boolean;
   showShareLink?: boolean;
 }) {
   const imageSize = compact ? 60 : 66;
@@ -39,6 +41,13 @@ export default function PackageItems({
 
   return (
     <div className={compact ? "space-y-3" : "space-y-5"}>
+      {locked && (
+        <div className="flex items-center gap-2 rounded-xl border border-border bg-surface-muted px-3 py-2 text-xs font-medium text-foreground/70">
+          <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          Ընտրությունը կողպված է այս հղումով և չի կարող փոփոխվել
+        </div>
+      )}
+
       {items.map((item) =>
         item.type === "fixed" ? (
           <FixedItemRow
@@ -55,6 +64,7 @@ export default function PackageItems({
             imageSize={imageSize}
             compact={compact}
             selectedOptionId={selections[item.id]}
+            locked={locked}
             onSelect={(optionId) =>
               setSelections((prev) => ({ ...prev, [item.id]: optionId }))
             }
@@ -63,7 +73,7 @@ export default function PackageItems({
         )
       )}
 
-      {showShareLink && (
+      {showShareLink && !locked && (
         <ShareSelectionLink packageId={packageId} selections={selections} />
       )}
 
@@ -104,6 +114,7 @@ function ChoiceGroup({
   imageSize,
   compact,
   selectedOptionId,
+  locked = false,
   onSelect,
   onImageOpen,
 }: {
@@ -112,6 +123,7 @@ function ChoiceGroup({
   imageSize: number;
   compact: boolean;
   selectedOptionId: string;
+  locked?: boolean;
   onSelect: (optionId: string) => void;
   onImageOpen: (image: LightboxImage) => void;
 }) {
@@ -126,13 +138,20 @@ function ChoiceGroup({
         {item.options.map((option) => (
           <label
             key={option.id}
-            className="flex cursor-pointer items-center gap-3 rounded-xl border-2 border-border p-2.5 transition-colors hover:border-foreground/20 has-checked:border-amber-500 has-checked:bg-amber-50 dark:has-checked:bg-amber-500/10"
+            className={`flex items-center gap-3 rounded-xl border-2 border-border p-2.5 transition-colors has-checked:border-amber-500 has-checked:bg-amber-50 dark:has-checked:bg-amber-500/10 ${
+              locked
+                ? "cursor-not-allowed opacity-75"
+                : "cursor-pointer hover:border-foreground/20"
+            }`}
           >
             <input
               type="radio"
               name={groupName}
               checked={selectedOptionId === option.id}
-              onChange={() => onSelect(option.id)}
+              disabled={locked}
+              onChange={() => {
+                if (!locked) onSelect(option.id);
+              }}
               className="peer sr-only"
             />
             <DishImage

@@ -6,7 +6,7 @@ export default function ServiceBadge({ service }: { service: ServiceBadgeData })
 
   return (
     <div className="service-badge flex w-24 flex-col items-center text-center sm:w-28 lg:w-32">
-      <div className="relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-black shadow-lg sm:h-28 sm:w-28 lg:h-32 lg:w-32">
+      <div className="service-badge-circle relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-black shadow-lg sm:h-28 sm:w-28 lg:h-32 lg:w-32">
         {image ? (
           <Image
             src={image.src}

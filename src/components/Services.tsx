@@ -1,15 +1,26 @@
-import { services } from "@/data/services";
+import { getSiteSettings } from "@/lib/queries/site-settings";
+import { getServices } from "@/lib/queries/services";
 import ServiceBadge from "@/components/ServiceBadge";
 import ServicesVideoBackground from "@/components/ServicesVideoBackground";
 import BackgroundVideo from "@/components/BackgroundVideo";
 
-const videoSources = [
-  { src: "/videos/venue-hall.mp4", poster: "/images/videos/venue-hall.jpg" },
-  { src: "/videos/venue-detail.mp4", poster: "/images/videos/venue-detail.jpg" },
-  { src: "/videos/venue-finale.mp4", poster: "/images/videos/venue-finale.jpg" },
-];
+export default async function Services() {
+  const [siteSettings, services] = await Promise.all([
+    getSiteSettings(),
+    getServices(),
+  ]);
 
-export default function Services() {
+  // The schema has no poster/thumbnail field for these — `poster` stays
+  // undefined, so the video components' existing black-background fallback
+  // shows while each clip loads instead of a photo thumbnail.
+  const videoSources = [
+    siteSettings.servicesBackgroundVideo1,
+    siteSettings.servicesBackgroundVideo2,
+    siteSettings.servicesBackgroundVideo3,
+  ]
+    .filter((video) => video)
+    .map((video) => ({ src: video!.node.mediaItemUrl }));
+
   return (
     <section
       id="services"
@@ -29,13 +40,13 @@ export default function Services() {
 
       <div className="relative mx-auto w-full max-w-6xl px-6">
         <h2 className="text-center text-3xl font-bold text-white sm:text-4xl">
-          Ծառայություններ
+          {siteSettings.servicesHeading}
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-white/80">
-          Ամեն ինչ Ձեր միջոցառումը կատարյալ դարձնելու համար՝ մեկ վայրում։
+          {siteSettings.servicesSubtitle}
         </p>
 
-        <div className="service-badges mt-14 flex flex-wrap items-start justify-center gap-x-6 gap-y-10 sm:gap-x-8 lg:flex-nowrap lg:justify-between">
+        <div className="service-badges mt-14 flex flex-wrap items-start justify-center gap-x-6 gap-y-10 sm:gap-x-8">
           {services.map((service) => (
             <ServiceBadge key={service.id} service={service} />
           ))}

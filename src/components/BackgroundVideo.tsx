@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
-import { Play } from "lucide-react";
 
 export interface BackgroundVideoSource {
   src: string;
@@ -30,7 +29,6 @@ export default function BackgroundVideo({
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
 
   const nextIndex = (activeIndex + 1) % sources.length;
@@ -61,25 +59,19 @@ export default function BackgroundVideo({
     const video = videoRefs.current[activeIndex];
     if (!video) return;
 
+    // `muted` + `playsInline` (both already set on the element below) are
+    // what make autoplay-without-a-gesture reliable on iOS/Android — no
+    // fallback UI is shown if it's ever blocked regardless, so the
+    // rejection is simply swallowed.
     const playResult = video.play();
     if (playResult && typeof playResult.catch === "function") {
-      playResult
-        .then(() => setAutoplayBlocked(false))
-        .catch(() => setAutoplayBlocked(true));
+      playResult.catch(() => {});
     }
   }, [isVisible, reducedMotion, activeIndex]);
 
   const handleEnded = (index: number) => {
     if (index !== activeIndex) return;
     setActiveIndex((i) => (i + 1) % sources.length);
-  };
-
-  const handleManualPlay = () => {
-    const video = videoRefs.current[activeIndex];
-    video
-      ?.play()
-      .then(() => setAutoplayBlocked(false))
-      .catch(() => {});
   };
 
   if (sources.length === 0) return null;
@@ -141,23 +133,6 @@ export default function BackgroundVideo({
           </div>
         );
       })}
-
-      {isVisible && !reducedMotion && autoplayBlocked && (
-        <button
-          type="button"
-          onClick={handleManualPlay}
-          aria-label="Նվագարկել տեսանյութը"
-          className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 transition-colors hover:bg-black/50"
-        >
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/60 backdrop-blur">
-            <Play
-              className="h-7 w-7 translate-x-0.5 text-white"
-              fill="currentColor"
-              aria-hidden="true"
-            />
-          </span>
-        </button>
-      )}
     </div>
   );
 }

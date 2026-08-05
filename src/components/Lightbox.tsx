@@ -146,7 +146,7 @@ export default function Lightbox({
 function LightboxImage({ image }: { image: LightboxImage }) {
   const [failed, setFailed] = useState(false);
 
-  if (failed) {
+  if (failed || !image.src) {
     return (
       <div className="flex h-72 w-full max-w-md items-center justify-center rounded-xl bg-neutral-700 p-6 text-center text-neutral-300">
         {image.alt}

@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 import PackagesGrid from "@/components/PackagesGrid";
+import { getPackages } from "@/lib/queries/packages";
 import { SITE_URL } from "@/lib/constants";
 
-export default function Packages() {
+export default async function Packages() {
+  const packages = await getPackages();
+
   return (
     <section id="packages" className="mx-auto w-full max-w-6xl px-6 py-20 scroll-mt-24">
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
@@ -19,11 +22,11 @@ export default function Packages() {
           className="flex shrink-0 flex-col items-center gap-1.5 rounded-xl border border-black/10 bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
         >
           <QRCodeSVG value={`${SITE_URL}/packages`} size={64} level="M" />
-          <span className="text-[11px] text-foreground/50">Սկանավորեք</span>
+          <span className="text-[11px] text-foreground">Սկանավորեք</span>
         </Link>
       </div>
 
-      <PackagesGrid />
+      <PackagesGrid packages={packages} />
     </section>
   );
 }

@@ -2,13 +2,20 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PackagesGrid from "@/components/PackagesGrid";
+import { getPackages } from "@/lib/queries/packages";
+
+// See src/app/page.tsx for why this is needed — packages/dishes are edited
+// in WordPress and need to reappear without a manual rebuild.
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Փաթեթներ — Bayazet Hall",
   description: "Bayazet Hall-ի հարսանիքի և միջոցառումների փաթեթները և գները։",
 };
 
-export default function PackagesPage() {
+export default async function PackagesPage() {
+  const packages = await getPackages();
+
   return (
     <>
       <Navbar />
@@ -21,7 +28,7 @@ export default function PackagesPage() {
             Ընտրեք ձեր միջոցառմանը հարմար փաթեթը։
           </p>
 
-          <PackagesGrid />
+          <PackagesGrid packages={packages} />
         </section>
       </main>
       <Footer />

@@ -4,10 +4,15 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PackageItems from "@/components/PackageItems";
-import { packages } from "@/data/packages";
+import { getPackages } from "@/lib/queries/packages";
 import { formatAmd } from "@/lib/format";
 
-export function generateStaticParams() {
+// See src/app/page.tsx for why this is needed — packages/dishes are edited
+// in WordPress and need to reappear without a manual rebuild.
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const packages = await getPackages();
   return packages.map((pkg) => ({ id: pkg.id }));
 }
 
@@ -17,7 +22,11 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const pkg = packages.find((p) => p.id === id);
+  const packages = await getPackages();
+  // This Next.js version hands dynamic-segment params through raw (still
+  // percent-encoded), unlike the auto-decoding behavior of older versions —
+  // decode before comparing against our (decoded) package ids.
+  const pkg = packages.find((p) => p.id === decodeURIComponent(id));
 
   return {
     title: pkg ? `${pkg.name} — Bayazet Hall` : "Փաթեթ — Bayazet Hall",
@@ -34,7 +43,8 @@ export default async function PackageDetailPage({
 }) {
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
-  const pkg = packages.find((p) => p.id === id);
+  const packages = await getPackages();
+  const pkg = packages.find((p) => p.id === decodeURIComponent(id));
 
   if (!pkg) {
     notFound();
@@ -49,6 +59,11 @@ export default async function PackageDetailPage({
       initialSelections[item.id] = optionId;
     }
   }
+  // A URL only carries selections once it's been through
+  // ShareSelectionLink's "generate link" flow — a customer's own first
+  // visit never has any. Treat that as "this is a shared link" and freeze
+  // it so whoever opens it next (e.g. the manager) can't change it.
+  const locked = Object.keys(initialSelections).length > 0;
 
   return (
     <>
@@ -78,8 +93,9 @@ export default async function PackageDetailPage({
             <h1 className="text-3xl font-bold sm:text-4xl">{pkg.name}</h1>
             <p className="mt-2 text-foreground/60">{pkg.description}</p>
             <p className="mt-4 text-sm text-foreground/60">
-              Ընտրեք Ձեզ նախընտրելի տարբերակները և կիսվեք հղումով մեր
-              մենեջերի հետ։
+              {locked
+                ? "Այս հղումն արդեն պարունակում է ընտրված տարբերակները։"
+                : "Ընտրեք Ձեզ նախընտրելի տարբերակները և կիսվեք հղումով մեր մենեջերի հետ։"}
             </p>
 
             <div className="mt-6 flex items-baseline gap-1">
@@ -96,6 +112,7 @@ export default async function PackageDetailPage({
                 items={pkg.items}
                 packageId={pkg.id}
                 initialSelections={initialSelections}
+                locked={locked}
                 showShareLink
               />
             </div>
