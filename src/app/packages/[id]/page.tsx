@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PackageItems from "@/components/PackageItems";
+import JsonLd from "@/components/JsonLd";
 import { getPackages } from "@/lib/queries/packages";
 import { formatAmd } from "@/lib/format";
+import { SEO_KEYWORDS, SITE_URL } from "@/lib/constants";
 
 // See src/app/page.tsx for why this is needed — packages/dishes are edited
 // in WordPress and need to reappear without a manual rebuild.
@@ -22,15 +24,31 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
+  const decodedId = decodeURIComponent(id);
   const packages = await getPackages();
   // This Next.js version hands dynamic-segment params through raw (still
   // percent-encoded), unlike the auto-decoding behavior of older versions —
   // decode before comparing against our (decoded) package ids.
-  const pkg = packages.find((p) => p.id === decodeURIComponent(id));
+  const pkg = packages.find((p) => p.id === decodedId);
 
   return {
-    title: pkg ? `${pkg.name} — Bayazet Hall` : "Փաթեթ — Bayazet Hall",
+    // Just the package name (not "Name — Bayazet Hall") — the root
+    // layout's title.template appends the site name automatically.
+    title: pkg ? pkg.name : "Փաթեթ",
     description: pkg?.description,
+    keywords: pkg ? [...SEO_KEYWORDS, pkg.name, `${pkg.name} փաթեթ`] : SEO_KEYWORDS,
+    alternates: {
+      // Share links append selected dishes as query params (?salad=... etc)
+      // — those are the same content as the base package page, so point
+      // the canonical at the clean URL to avoid duplicate-content signals.
+      canonical: `/packages/${decodedId}`,
+    },
+    openGraph: pkg
+      ? {
+          title: pkg.name,
+          description: pkg.description,
+        }
+      : undefined,
   };
 }
 
@@ -65,8 +83,24 @@ export default async function PackageDetailPage({
   // it so whoever opens it next (e.g. the manager) can't change it.
   const locked = Object.keys(initialSelections).length > 0;
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: pkg.name,
+    description: pkg.description,
+    url: `${SITE_URL}/packages/${pkg.id}`,
+    offers: {
+      "@type": "Offer",
+      price: pkg.pricePerPerson,
+      priceCurrency: "AMD",
+      availability: "https://schema.org/InStock",
+      url: `${SITE_URL}/packages/${pkg.id}`,
+    },
+  };
+
   return (
     <>
+      <JsonLd data={productSchema} />
       <Navbar />
       <main className="flex-1">
         <section className="mx-auto w-full max-w-3xl px-6 py-16">

@@ -3,14 +3,22 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PackagesGrid from "@/components/PackagesGrid";
 import { getPackages } from "@/lib/queries/packages";
+import { SEO_KEYWORDS } from "@/lib/constants";
 
 // See src/app/page.tsx for why this is needed — packages/dishes are edited
 // in WordPress and need to reappear without a manual rebuild.
 export const revalidate = 60;
 
+// `title` here is just "Փաթեթներ" (not the full "Փաթեթներ — Bayazet Hall")
+// because the root layout's title.template appends the site name — setting
+// the full string here would duplicate it.
 export const metadata: Metadata = {
-  title: "Փաթեթներ — Bayazet Hall",
+  title: "Փաթեթներ",
   description: "Bayazet Hall-ի հարսանիքի և միջոցառումների փաթեթները և գները։",
+  keywords: [...SEO_KEYWORDS, "հարսանիքի փաթեթներ", "միջոցառման փաթեթներ"],
+  alternates: {
+    canonical: "/packages",
+  },
 };
 
 export default async function PackagesPage() {

@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import { Noto_Sans_Armenian } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import JsonLd from "@/components/JsonLd";
+import { getSiteSettings } from "@/lib/queries/site-settings";
+import {
+  DEFAULT_META_DESCRIPTION,
+  SEO_KEYWORDS,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/constants";
 import "./globals.css";
 
 const notoArmenian = Noto_Sans_Armenian({
@@ -9,17 +17,68 @@ const notoArmenian = Noto_Sans_Armenian({
   display: "swap",
 });
 
+const TITLE = "Bayazet Hall — Հարսանիքների և միջոցառումների սրահ";
+const OG_IMAGE = `${SITE_URL}/images/Logo.png`;
+
 export const metadata: Metadata = {
-  title: "Bayazet Hall — Հարսանիքների և միջոցառումների սրահ",
-  description:
-    "Bayazet Hall — հարսանիքների, տոնակատարությունների և միջոցառումների սրահ Հայաստանում։",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: TITLE,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: DEFAULT_META_DESCRIPTION,
+  keywords: SEO_KEYWORDS,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    locale: "hy_AM",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: DEFAULT_META_DESCRIPTION,
+    images: [{ url: OG_IMAGE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DEFAULT_META_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await getSiteSettings();
+
+  // Sitewide structured data — describes the business itself (not any one
+  // page's content), so it's rendered once here rather than per-page.
+  // Combining LocalBusiness + EventVenue is valid JSON-LD (an array of
+  // @type values) and covers both "this is a local business with an
+  // address/phone" and "this is a venue for hosting events" semantics.
+  const businessSchema = {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "EventVenue"],
+    name: SITE_NAME,
+    url: SITE_URL,
+    image: OG_IMAGE,
+    description: DEFAULT_META_DESCRIPTION,
+    address: siteSettings.contactAddress,
+    telephone: siteSettings.contactPhone,
+    sameAs: [
+      siteSettings.socialInstagramUrl,
+      siteSettings.socialFacebookUrl,
+    ].filter(Boolean),
+  };
+
   return (
     <html
       lang="hy"
@@ -27,6 +86,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-sans">
+        <JsonLd data={businessSchema} />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

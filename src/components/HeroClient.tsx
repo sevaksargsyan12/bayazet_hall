@@ -75,7 +75,11 @@ export default function HeroClient({
           <Image
             key={slide.src}
             src={slide.src}
-            alt=""
+            // The wrapping div is aria-hidden (this is a decorative
+            // background carousel, and the real heading text is rendered
+            // separately below) so screen readers still correctly skip
+            // these — but real alt text still helps image search indexing.
+            alt={slide.alt}
             fill
             priority={i === 0}
             sizes="100vw"

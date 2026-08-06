@@ -8,6 +8,7 @@ export interface Slide {
 interface GetSlidesResponse {
   slides: {
     nodes: {
+      title: string;
       featuredImage: { node: { sourceUrl: string; altText: string } } | null;
     }[];
   };
@@ -17,6 +18,7 @@ const GET_SLIDES = /* GraphQL */ `
   query GetSlides {
     slides(first: 20, where: { orderby: { field: MENU_ORDER, order: ASC } }) {
       nodes {
+        title
         featuredImage {
           node {
             sourceUrl
@@ -34,6 +36,8 @@ export async function getSlides(): Promise<Slide[]> {
     .filter((slide) => slide.featuredImage)
     .map((slide) => ({
       src: slide.featuredImage!.node.sourceUrl,
-      alt: slide.featuredImage!.node.altText,
+      // Fall back to the slide's own title when the media library item has
+      // no dedicated alt text set — same pattern as gallery/services queries.
+      alt: slide.featuredImage!.node.altText || slide.title,
     }));
 }
