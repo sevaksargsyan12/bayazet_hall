@@ -1,4 +1,16 @@
+import { Resend } from "resend";
 import type { ContactPayload } from "@/lib/validate-contact";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 export async function notifyContactSubmission(payload: ContactPayload) {
   const subject = `Նոր հայտ Bayazet Hall կայքից՝ ${payload.name}`;
@@ -9,5 +21,33 @@ export async function notifyContactSubmission(payload: ContactPayload) {
     receivedAt: new Date().toISOString(),
   });
 
-  // TODO(email): wire a real provider here (e.g. Resend) once credentials exist.
+  const html = `
+    <h2>${escapeHtml(subject)}</h2>
+    <p><strong>Անուն:</strong> ${escapeHtml(payload.name)}</p>
+    <p><strong>Հեռախոս:</strong> ${escapeHtml(payload.phone)}</p>
+    <p><strong>Էլ. հասցե:</strong> ${escapeHtml(payload.email)}</p>
+    <p><strong>Հաղորդագրություն:</strong></p>
+    <p>${escapeHtml(payload.message).replace(/\n/g, "<br />")}</p>
+  `.trim();
+
+  // recipient is the only visible "to"; recipient2 (if set) is bcc'd
+  // silently — it must never appear in a to/cc header. reply-to is
+  // intentionally the real inbox (not the submitter's address) so a staff
+  // member replying from their mail client lands back on
+  // CONTACT_FORM_RECIPIENT rather than the unmonitored no-reply sender.
+  const { error } = await resend.emails.send({
+    from: "no-reply@bayazethall.am",
+    to: process.env.CONTACT_FORM_RECIPIENT!,
+    bcc: process.env.CONTACT_FORM_RECIPIENT2,
+    replyTo: process.env.CONTACT_FORM_RECIPIENT,
+    subject,
+    html,
+  });
+
+  if (error) {
+    // Resend's SDK returns { error } rather than throwing — re-throw so the
+    // route's existing try/catch treats this as a failed submission instead
+    // of silently reporting success.
+    throw new Error(`Resend failed to send contact notification: ${error.message}`);
+  }
 }
