@@ -39,7 +39,7 @@ export async function notifyContactSubmission(payload: ContactPayload) {
     from: "no-reply@bayazethall.am",
     to: process.env.CONTACT_FORM_RECIPIENT!,
     bcc: process.env.CONTACT_FORM_RECIPIENT2,
-    replyTo: process.env.CONTACT_FORM_RECIPIENT,
+    replyTo: escapeHtml(payload.email),
     subject,
     html,
   });
