@@ -31,15 +31,15 @@ export async function notifyContactSubmission(payload: ContactPayload) {
   `.trim();
 
   // recipient is the only visible "to"; recipient2 (if set) is bcc'd
-  // silently — it must never appear in a to/cc header. reply-to is
-  // intentionally the real inbox (not the submitter's address) so a staff
-  // member replying from their mail client lands back on
-  // CONTACT_FORM_RECIPIENT rather than the unmonitored no-reply sender.
+  // silently — it must never appear in a to/cc header. reply-to is the
+  // submitter's own address, so a staff member replying from their mail
+  // client goes straight back to the customer instead of the unmonitored
+  // no-reply sender.
   const { error } = await resend.emails.send({
     from: "no-reply@bayazethall.am",
     to: process.env.CONTACT_FORM_RECIPIENT!,
     bcc: process.env.CONTACT_FORM_RECIPIENT2,
-    replyTo: escapeHtml(payload.email),
+    replyTo: payload.email,
     subject,
     html,
   });
