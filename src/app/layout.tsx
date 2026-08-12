@@ -31,6 +31,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  // The base .ico lives at src/app/favicon.ico (Next auto-serves that one
+  // at /favicon.ico) — these add the higher-res/modern variants generated
+  // alongside it, which live in public/favicon/ so aren't auto-detected.
+  icons: {
+    icon: [
+      { url: "/favicon/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: "/favicon/apple-touch-icon.png",
+  },
+  manifest: "/favicon/site.webmanifest",
   robots: {
     index: true,
     follow: true,
