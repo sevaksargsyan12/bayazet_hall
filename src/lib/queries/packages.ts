@@ -5,7 +5,9 @@ import type { DishOption, Package, PackageItem } from "@/data/packages";
 interface WPDishCategory {
   name: string;
   slug: string;
-  selectionType: "single_select" | "fixed_included";
+  // 0 = fixed/no choice, 1 = radio (pick exactly 1), 2+ = checkbox (pick
+  // exactly that many). Was a string enum, now an Int on the WP side.
+  selectionType: number;
   displayOrder: number;
 }
 
@@ -34,11 +36,13 @@ interface GetPackagesResponse {
 }
 
 // NOTE: docs/bayazet-hall-graphql-integration.md §4.4's query omits an
-// explicit `first:` argument on `packages(...)`, despite §3 itself warning
-// every list query needs one or silently truncates at 10. Added `first: 20`
-// here. Also added `id`/`slug` on both the package and each `Dish` node —
-// the doc's query doesn't select them, but our routing/keys need a stable
-// identifier and none of the doc's other fields provide one.
+// explicit `first:` argument on `packages(...)` or `includedItems(...)`,
+// despite §3 itself warning every list query needs one or silently
+// truncates at 10. Added `first: 20` on packages and `first: 100` on
+// includedItems (a package's full dish list can easily exceed 10). Also
+// added `id`/`slug` on both the package and each `Dish` node — the doc's
+// query doesn't select them, but our routing/keys need a stable identifier
+// and none of the doc's other fields provide one.
 const GET_PACKAGES = /* GraphQL */ `
   query GetPackages {
     packages(
@@ -53,7 +57,7 @@ const GET_PACKAGES = /* GraphQL */ `
           price
           description
           highlighted
-          includedItems {
+          includedItems(first: 100) {
             nodes {
               ... on Dish {
                 id
@@ -83,19 +87,27 @@ const GET_PACKAGES = /* GraphQL */ `
 `;
 
 /**
- * Groups a package's flat dish list into the fixed/choice item shape our
- * components already render, per the integration doc §4.4:
+ * Groups a package's flat dish list into the fixed/radio/checkbox item
+ * shape our components render:
  *
  * - Bucket dishes by their first category's slug, sort buckets by
  *   `displayOrder`.
- * - `single_select` categories become ONE choice-type PackageItem holding
- *   every dish in that bucket as selectable `options` (first one is the
- *   pre-selected default — PackageItems.tsx already implements this).
- * - `fixed_included` categories become ONE fixed-type PackageItem PER DISH,
- *   not grouped — a category can hold multiple always-included dishes (e.g.
- *   the Royal package's "cold-appetizers" bucket has 3), and the fixed-item
- *   renderer only ever shows a single dish per item, so grouping them would
- *   silently drop all but the first.
+ * - `selectionType === 0` (fixed) categories become ONE fixed-type
+ *   PackageItem PER DISH, not grouped — a category can hold multiple
+ *   always-included dishes (e.g. the Royal package's "cold-appetizers"
+ *   bucket has 3), and the fixed-item renderer only ever shows a single
+ *   dish per item, so grouping them would silently drop all but the first.
+ * - `selectionType === 1` (radio) categories become ONE radio-type
+ *   PackageItem holding every dish in that bucket as selectable `options`
+ *   (first one is the pre-selected default — PackageItems.tsx implements
+ *   this).
+ * - `selectionType >= 2` (checkbox) categories become ONE checkbox-type
+ *   PackageItem with `max` set to the required pick count — capped to the
+ *   bucket's actual dish count in case WP data asks for more picks than
+ *   there are dishes to pick from. The first `max` dishes are the
+ *   pre-selected defaults.
+ * - A missing/null `selectionType` is treated as `0` (fixed) — the safe
+ *   default that never accidentally forces an incomplete choice UI.
  */
 function groupDishesByCategory(dishes: WPDish[]): PackageItem[] {
   const bucketOrder: string[] = [];
@@ -124,20 +136,30 @@ function groupDishesByCategory(dishes: WPDish[]): PackageItem[] {
       imageUrl: dish.featuredImage?.node.sourceUrl ?? "",
     }));
 
-    if (category.selectionType === "single_select") {
-      items.push({
-        id: category.slug,
-        type: "choice",
-        label: category.name,
-        options,
-      });
-    } else {
+    const selectionType = Math.max(0, category.selectionType ?? 0);
+
+    if (selectionType === 0) {
       options.forEach((option, index) => {
         items.push({
           id: `${category.slug}-${index}`,
           type: "fixed",
           options: [option],
         });
+      });
+    } else if (selectionType === 1) {
+      items.push({
+        id: category.slug,
+        type: "radio",
+        label: category.name,
+        options,
+      });
+    } else {
+      items.push({
+        id: category.slug,
+        type: "checkbox",
+        label: category.name,
+        max: Math.min(selectionType, options.length),
+        options,
       });
     }
   }

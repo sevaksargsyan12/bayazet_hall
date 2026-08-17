@@ -58,10 +58,13 @@ naive assumptions — implement queries exactly as written below, not as
 - **Relationship fields return a connection, not a plain array.** Always go
   through `{ nodes { ... } }`, e.g. `includedItems { nodes { ... } }`.
 - **Within a package's `includedItems`, order = default selection.** For any
-  `DishCategory` where `selectionType` is `single_select`, the first dish in
-  the array belonging to that category is the pre-selected default on load.
-  Group dishes by `dishCategories.nodes[0].slug` client-side to reconstruct
-  the category groupings (Salad, Main dish, etc.) shown in the UI.
+  `DishCategory` where `selectionType` is `1` or higher, the first dish(es)
+  in the array belonging to that category are the pre-selected default(s) on
+  load. Group dishes by `dishCategories.nodes[0].slug` client-side to
+  reconstruct the category groupings (Salad, Main dish, etc.) shown in the UI.
+- **`selectionType` is an Int, not a string enum**: `0` = fixed/included, no
+  guest choice; `1` = guest picks exactly 1 (radio); `2` or higher = guest
+  picks exactly that many (checkbox, capped at that count).
 
 ## 4. Queries
 
@@ -150,7 +153,7 @@ query GetPackages {
         price
         description
         highlighted
-        includedItems {
+        includedItems(first: 100) {
           nodes {
             ... on Dish {
               title
@@ -179,11 +182,14 @@ query GetPackages {
 
 **Client-side transform needed:** the API returns a flat list of dishes per
 package. Group `includedItems.nodes` by `dishCategories.nodes[0].slug`, sort
-groups by `displayOrder`, and within each group:
-- if `selectionType === 'single_select'` → render as radio options, first
-  item in the array pre-selected
-- if `selectionType === 'fixed_included'` → render as a plain checkmarked
-  list, no interaction
+groups by `displayOrder`, and within each group, branch on `selectionType`
+(an Int):
+- `0` → render as a plain checkmarked list, no interaction
+- `1` → render as radio options, first item in the array pre-selected
+- `2` or higher → render as checkboxes, capped at exactly `selectionType`
+  selections; pre-select the first `selectionType` dishes as defaults, and
+  disable any unselected checkbox once the cap is reached (the guest must
+  uncheck one before checking another)
 
 ### 4.5 Gallery
 

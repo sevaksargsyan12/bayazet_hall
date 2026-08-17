@@ -68,19 +68,33 @@ export default async function PackageDetailPage({
     notFound();
   }
 
-  const initialSelections: Record<string, string> = {};
+  const initialSelections: Record<string, string[]> = {};
   for (const item of pkg.items) {
-    if (item.type !== "choice") continue;
+    if (item.type === "fixed") continue;
+
     const raw = resolvedSearchParams[item.id];
-    const optionId = Array.isArray(raw) ? raw[0] : raw;
-    if (optionId && item.options.some((option) => option.id === optionId)) {
-      initialSelections[item.id] = optionId;
-    }
+    const rawValues = raw === undefined ? [] : Array.isArray(raw) ? raw : [raw];
+    // Dedupe (a hand-edited URL could repeat the same id) and drop any id
+    // that doesn't match a real option for this item.
+    const validValues = Array.from(
+      new Set(rawValues.filter((v) => item.options.some((option) => option.id === v)))
+    );
+    // Radio caps at 1; checkbox caps at its required pick count. If a link
+    // supplies more than that (stale/hand-edited), the first `cap` values
+    // in URL order win.
+    const cap = item.type === "checkbox" ? (item.max ?? item.options.length) : 1;
+    const capped = validValues.slice(0, cap);
+
+    if (capped.length > 0) initialSelections[item.id] = capped;
   }
   // A URL only carries selections once it's been through
   // ShareSelectionLink's "generate link" flow — a customer's own first
   // visit never has any. Treat that as "this is a shared link" and freeze
-  // it so whoever opens it next (e.g. the manager) can't change it.
+  // it so whoever opens it next (e.g. the manager) can't change it. If a
+  // checkbox selection is valid but incomplete relative to the category's
+  // current pick count (e.g. WP menu changed after the link was shared),
+  // it still renders locked with whatever subset survived — no per-item
+  // unlock fallback.
   const locked = Object.keys(initialSelections).length > 0;
 
   const productSchema = {
