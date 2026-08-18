@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PackagesGrid from "@/components/PackagesGrid";
+import ComparePackagesButton from "@/components/ComparePackagesButton";
 import { getPackages } from "@/lib/queries/packages";
 import { SEO_KEYWORDS } from "@/lib/constants";
 
@@ -35,6 +36,10 @@ export default async function PackagesPage() {
           <p className="mx-auto mt-3 max-w-2xl text-center text-foreground/70">
             Ընտրեք ձեր միջոցառմանը հարմար փաթեթը։
           </p>
+
+          <div className="mt-6 flex justify-center">
+            <ComparePackagesButton packages={packages} />
+          </div>
 
           <PackagesGrid packages={packages} />
         </section>
