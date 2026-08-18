@@ -46,10 +46,9 @@ export default function PackageItems({
                 : [];
         } else {
           const max = item.max ?? item.options.length;
-          initial[item.id] =
-            preset.length > 0
-              ? preset.slice(0, max)
-              : item.options.slice(0, max).map((option) => option.id);
+          // Unlike radio, checkbox categories start with nothing checked —
+          // pre-checking would look like we made the choice for the guest.
+          initial[item.id] = preset.length > 0 ? preset.slice(0, max) : [];
         }
       }
       return initial;
@@ -83,6 +82,7 @@ export default function PackageItems({
               key={item.id}
               item={item}
               imageSize={imageSize}
+              compact={compact}
               onImageOpen={setLightboxImage}
             />
           );
@@ -135,21 +135,29 @@ export default function PackageItems({
 function FixedGroup({
   item,
   imageSize,
+  compact,
   onImageOpen,
 }: {
   item: PackageItem;
   imageSize: number;
+  compact: boolean;
   onImageOpen: (image: LightboxImage) => void;
 }) {
+  // Home-page cards start collapsed to 1 dish per category — the detail
+  // page (compact=false) always shows everything, no collapsing at all.
+  const [expanded, setExpanded] = useState(!compact);
+  const visibleOptions =
+    compact && !expanded ? item.options.slice(0, 1) : item.options;
+
   return (
-    <fieldset className="p-2 border border-[#dfe2b2] rounded-lg">
+    <fieldset className="p-2 border border-[#62662a] rounded-lg">
       {item.label && (
         <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground">
           {item.label}
         </legend>
       )}
       <div className="space-y-2">
-        {item.options.map((option) => (
+        {visibleOptions.map((option) => (
           <FixedItemRow
             key={option.id}
             option={option}
@@ -158,7 +166,40 @@ function FixedGroup({
           />
         ))}
       </div>
+      <ViewMoreButton
+        compact={compact}
+        expanded={expanded}
+        total={item.options.length}
+        onToggle={() => setExpanded((prev) => !prev)}
+      />
     </fieldset>
+  );
+}
+
+// Shown only on home-page cards, only when there's actually more than 1
+// item to reveal. Toggles both ways — expand to see the rest, and the same
+// button collapses back once expanded.
+function ViewMoreButton({
+  compact,
+  expanded,
+  total,
+  onToggle,
+}: {
+  compact: boolean;
+  expanded: boolean;
+  total: number;
+  onToggle: () => void;
+}) {
+  if (!compact || total <= 1) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="mt-2 cursor-pointer text-xs font-medium text-amber-700 hover:underline dark:text-amber-400"
+    >
+      {expanded ? "Փակել" : `Տեսնել ավելին (${total - 1})`}
+    </button>
   );
 }
 
@@ -188,32 +229,13 @@ function FixedItemRow({
   );
 }
 
-// Click-to-toggle popover (works on both mouse and touch, unlike a
-// hover-only tooltip) explaining a category's selection rule — text comes
-// straight from WordPress (`item.info`), never authored here.
-function InfoTooltip({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-
+// Always-visible selection-rule badge — text comes straight from WordPress
+// (`item.info`), never authored here. No click/hover needed to see it.
+function CategoryInfo({ text }: { text: string }) {
   return (
-    <span className="relative inline-flex">
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        onBlur={() => setOpen(false)}
-        title={text}
-        aria-label="Տեղեկատվություն ընտրության մասին"
-        className="text-foreground/40 transition-colors hover:text-foreground/70"
-      >
-        <Info className="h-3.5 w-3.5" aria-hidden="true" />
-      </button>
-      {open && (
-        <span
-          role="tooltip"
-          className="absolute left-1/2 top-full z-20 mt-1.5 w-48 -translate-x-1/2 rounded-lg border border-border bg-surface p-2 text-xs font-normal normal-case tracking-normal text-foreground/80 shadow-lg"
-        >
-          {text}
-        </span>
-      )}
+    <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium normal-case tracking-normal text-green-700 dark:bg-green-500/15 dark:text-green-400">
+      <Info className="h-3 w-3 shrink-0" aria-hidden="true" />
+      {text}
     </span>
   );
 }
@@ -237,16 +259,20 @@ function RadioGroup({
   onSelect: (optionId: string) => void;
   onImageOpen: (image: LightboxImage) => void;
 }) {
+  const [expanded, setExpanded] = useState(!compact);
+  const visibleOptions =
+    compact && !expanded ? item.options.slice(0, 1) : item.options;
+
   return (
-    <fieldset className="p-2 border border-[#dfe2b2] rounded-lg">
+    <fieldset className="p-2 border border-[#62662a] rounded-lg">
       {item.label && (
-        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
+        <legend className="mb-2 flex flex-wrap items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
           {item.label}
-          {item.info && <InfoTooltip text={item.info} />}
+          {item.info && <CategoryInfo text={item.info} />}
         </legend>
       )}
       <div className={compact ? "space-y-2" : "grid gap-2 sm:grid-cols-2"}>
-        {item.options.map((option) => (
+        {visibleOptions.map((option) => (
           <label
             key={option.id}
             className={`flex items-center gap-3 rounded-xl border-2 border-border p-2.5 transition-colors has-checked:border-amber-500 has-checked:bg-amber-50 dark:has-checked:bg-amber-500/10 ${
@@ -283,6 +309,12 @@ function RadioGroup({
           </label>
         ))}
       </div>
+      <ViewMoreButton
+        compact={compact}
+        expanded={expanded}
+        total={item.options.length}
+        onToggle={() => setExpanded((prev) => !prev)}
+      />
     </fieldset>
   );
 }
@@ -305,17 +337,20 @@ function CheckboxGroup({
   onImageOpen: (image: LightboxImage) => void;
 }) {
   const max = item.max ?? item.options.length;
+  const [expanded, setExpanded] = useState(!compact);
+  const visibleOptions =
+    compact && !expanded ? item.options.slice(0, 1) : item.options;
 
   return (
-    <fieldset className="p-2 border border-[#dfe2b2] rounded-lg">
+    <fieldset className="p-2 border border-[#62662a] rounded-lg">
       {item.label && (
-        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
+        <legend className="mb-2 flex flex-wrap items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
           {item.label} ({selectedOptionIds.length}/{max})
-          {item.info && <InfoTooltip text={item.info} />}
+          {item.info && <CategoryInfo text={item.info} />}
         </legend>
       )}
       <div className={compact ? "space-y-2" : "grid gap-2 sm:grid-cols-2"}>
-        {item.options.map((option) => {
+        {visibleOptions.map((option) => {
           const checked = selectedOptionIds.includes(option.id);
           // Recomputed fresh every render from the current selection —
           // never cached — so a checked box is only ever disabled by
@@ -371,6 +406,12 @@ function CheckboxGroup({
           );
         })}
       </div>
+      <ViewMoreButton
+        compact={compact}
+        expanded={expanded}
+        total={item.options.length}
+        onToggle={() => setExpanded((prev) => !prev)}
+      />
     </fieldset>
   );
 }

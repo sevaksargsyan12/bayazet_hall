@@ -39,6 +39,13 @@ export default function PackageCard({ pkg }: { pkg: Package }) {
             </span>
           </div>
 
+          <Link
+            href={`/packages/${pkg.id}`}
+            className="mt-4 inline-block text-sm font-medium text-amber-700 underline underline-offset-2 dark:text-amber-400"
+          >
+            Մանրամասն
+          </Link>
+
           <div className="mt-6 flex-1">
             <PackageItems items={pkg.items} packageId={pkg.id} compact />
           </div>
@@ -46,7 +53,7 @@ export default function PackageCard({ pkg }: { pkg: Package }) {
           <div className="mt-6 flex items-center justify-between gap-4 border-t border-border pt-5">
             <Link
               href={`/packages/${pkg.id}`}
-              className="text-sm font-medium text-amber-700 underline-offset-2 hover:underline dark:text-amber-400"
+              className="text-sm font-medium text-amber-700 underline underline-offset-2 dark:text-amber-400"
             >
               Մանրամասն
             </Link>

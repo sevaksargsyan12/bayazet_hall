@@ -23,7 +23,7 @@ export default function DishImage({
   const visual = showPlaceholder ? (
     <div
       style={{ width: size, height: size }}
-      className="flex items-center justify-center rounded-md bg-neutral-200 p-1 text-center text-[8px] leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-neutral-300"
+      className="flex items-center justify-center rounded-md bg-neutral-200 p-1 text-center text-[6px] leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-neutral-300"
     >
       {alt}
     </div>
