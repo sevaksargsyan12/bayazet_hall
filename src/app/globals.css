@@ -56,7 +56,7 @@ html {
   }
 
   .package-card {
-    animation: card-float 5s ease-in-out infinite alternate;
+    /* animation: card-float 5s ease-in-out infinite alternate; */
   }
 
   .package-card:nth-child(2),
