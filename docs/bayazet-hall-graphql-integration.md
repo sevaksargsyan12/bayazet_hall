@@ -138,19 +138,25 @@ image, per the current site-wide-text decision.
 query GetServices {
   services(first: 20, where: { orderby: { field: MENU_ORDER, order: ASC } }) {
     nodes {
+      id
       title
-      serviceFields {
+      serviceIcon {
         icon {
           node {
             sourceUrl
             altText
           }
         }
+        link
       }
     }
   }
 }
 ```
+
+Note: the field is `serviceIcon`, not `serviceFields` — confirmed against the live schema (an earlier version of this doc had it wrong).
+
+`serviceIcon.link` is optional free text (empty string when unset) — when present, the badge opens it in a new tab; when empty/absent, the badge stays non-interactive (a plain `<div>`, not a link).
 
 ### 4.4 Packages (with grouped dishes)
 
