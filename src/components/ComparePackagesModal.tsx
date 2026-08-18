@@ -129,9 +129,12 @@ function GroupRows({
 
   return (
     <>
-      <div className="col-span-full mt-3 pb-1 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+      <div className="sticky left-0 z-10 mt-3 bg-surface pb-1 text-xs font-semibold uppercase tracking-wide text-foreground/50">
         {group.label}
       </div>
+      {packages.map((pkg) => (
+        <div key={pkg.id} className="mt-3 bg-surface" />
+      ))}
 
       {showPresenceRow && (
         <>
