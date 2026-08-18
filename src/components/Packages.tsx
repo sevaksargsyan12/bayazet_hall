@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 import PackagesGrid from "@/components/PackagesGrid";
+import ComparePackagesButton from "@/components/ComparePackagesButton";
 import { getPackages } from "@/lib/queries/packages";
 import { SITE_URL } from "@/lib/constants";
 
@@ -15,6 +16,9 @@ export default async function Packages() {
           <p className="mx-auto mt-3 max-w-2xl text-foreground/70 sm:mx-0">
             Ընտրեք ձեր միջոցառմանը հարմար փաթեթը։
           </p>
+          <div className="mt-4 flex justify-center sm:justify-start">
+            <ComparePackagesButton packages={packages} />
+          </div>
         </div>
 
         <Link
