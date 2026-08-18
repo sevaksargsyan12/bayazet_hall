@@ -4,7 +4,6 @@ import type { Package } from "@/data/packages";
 import { formatAmd } from "@/lib/format";
 import { SITE_URL } from "@/lib/constants";
 import PackageItems from "@/components/PackageItems";
-import ShineOnView from "@/components/ShineOnView";
 
 export default function PackageCard({ pkg }: { pkg: Package }) {
   return (
@@ -23,7 +22,10 @@ export default function PackageCard({ pkg }: { pkg: Package }) {
               : "border-border bg-surface shadow-md shadow-amber-200/50 hover:border-foreground/20 dark:shadow-amber-500/10"
           }`}
         >
-          <ShineOnView />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-8 -top-8 h-28 w-28 rounded-full bg-amber-400/30 blur-2xl dark:bg-amber-400/20"
+          />
 
           <h3 className="text-2xl font-bold">{pkg.name}</h3>
           <p className="mt-2 text-sm text-foreground/60">{pkg.description}</p>
@@ -37,6 +39,13 @@ export default function PackageCard({ pkg }: { pkg: Package }) {
             </span>
           </div>
 
+          <Link
+            href={`/packages/${pkg.id}`}
+            className="mt-4 inline-block text-sm font-medium text-amber-700 underline underline-offset-2 dark:text-amber-400"
+          >
+            Մանրամասն
+          </Link>
+
           <div className="mt-6 flex-1">
             <PackageItems items={pkg.items} packageId={pkg.id} compact />
           </div>
@@ -44,7 +53,7 @@ export default function PackageCard({ pkg }: { pkg: Package }) {
           <div className="mt-6 flex items-center justify-between gap-4 border-t border-border pt-5">
             <Link
               href={`/packages/${pkg.id}`}
-              className="text-sm font-medium text-amber-700 underline-offset-2 hover:underline dark:text-amber-400"
+              className="text-sm font-medium text-amber-700 underline underline-offset-2 dark:text-amber-400"
             >
               Մանրամասն
             </Link>

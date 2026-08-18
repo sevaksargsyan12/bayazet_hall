@@ -10,4 +10,5 @@ export interface ServiceBadgeData {
   label: string;
   icon?: LucideIcon;
   image?: ServiceImage;
+  link?: string; // when set, the badge opens this URL in a new tab
 }

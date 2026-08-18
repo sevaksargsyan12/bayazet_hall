@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Link2, Lock } from "lucide-react";
+import { Check, Info, Link2, Lock } from "lucide-react";
 import DishImage from "@/components/DishImage";
 import Lightbox from "@/components/Lightbox";
 import type { PackageItem } from "@/data/packages";
@@ -19,7 +19,7 @@ export default function PackageItems({
   items: PackageItem[];
   packageId: string;
   compact?: boolean;
-  initialSelections?: Record<string, string>;
+  initialSelections?: Record<string, string[]>;
   locked?: boolean;
   showShareLink?: boolean;
 }) {
@@ -27,17 +27,44 @@ export default function PackageItems({
   const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(
     null
   );
-  const [selections, setSelections] = useState<Record<string, string>>(() => {
-    const initial: Record<string, string> = {};
-    for (const item of items) {
-      if (item.type !== "choice") continue;
-      const preset = initialSelections?.[item.id];
-      const isValidPreset =
-        preset && item.options.some((option) => option.id === preset);
-      initial[item.id] = isValidPreset ? preset! : item.options[0]?.id;
+  const [selections, setSelections] = useState<Record<string, string[]>>(
+    () => {
+      const initial: Record<string, string[]> = {};
+      for (const item of items) {
+        if (item.type === "fixed") continue;
+
+        const preset = (initialSelections?.[item.id] ?? []).filter((id) =>
+          item.options.some((option) => option.id === id)
+        );
+
+        if (item.type === "radio") {
+          initial[item.id] =
+            preset.length > 0
+              ? [preset[0]]
+              : item.options[0]
+                ? [item.options[0].id]
+                : [];
+        } else {
+          const max = item.max ?? item.options.length;
+          // Unlike radio, checkbox categories start with nothing checked —
+          // pre-checking would look like we made the choice for the guest.
+          initial[item.id] = preset.length > 0 ? preset.slice(0, max) : [];
+        }
+      }
+      return initial;
     }
-    return initial;
-  });
+  );
+
+  const toggleCheckboxOption = (itemId: string, optionId: string, max: number) => {
+    setSelections((prev) => {
+      const current = prev[itemId] ?? [];
+      if (current.includes(optionId)) {
+        return { ...prev, [itemId]: current.filter((id) => id !== optionId) };
+      }
+      if (current.length >= max) return prev; // defensive — UI already disables this path
+      return { ...prev, [itemId]: [...current, optionId] };
+    });
+  };
 
   return (
     <div className={compact ? "space-y-3" : "space-y-5"}>
@@ -48,30 +75,53 @@ export default function PackageItems({
         </div>
       )}
 
-      {items.map((item) =>
-        item.type === "fixed" ? (
-          <FixedItemRow
-            key={item.id}
-            option={item.options[0]}
-            imageSize={imageSize}
-            onImageOpen={setLightboxImage}
-          />
-        ) : (
-          <ChoiceGroup
+      {items.map((item) => {
+        if (item.type === "fixed") {
+          return (
+            <FixedGroup
+              key={item.id}
+              item={item}
+              imageSize={imageSize}
+              compact={compact}
+              onImageOpen={setLightboxImage}
+            />
+          );
+        }
+
+        if (item.type === "radio") {
+          return (
+            <RadioGroup
+              key={item.id}
+              item={item}
+              groupName={`${packageId}-${item.id}`}
+              imageSize={imageSize}
+              compact={compact}
+              selectedOptionId={selections[item.id]?.[0]}
+              locked={locked}
+              onSelect={(optionId) =>
+                setSelections((prev) => ({ ...prev, [item.id]: [optionId] }))
+              }
+              onImageOpen={setLightboxImage}
+            />
+          );
+        }
+
+        const max = item.max ?? item.options.length;
+        return (
+          <CheckboxGroup
             key={item.id}
             item={item}
-            groupName={`${packageId}-${item.id}`}
             imageSize={imageSize}
             compact={compact}
-            selectedOptionId={selections[item.id]}
+            selectedOptionIds={selections[item.id] ?? []}
             locked={locked}
-            onSelect={(optionId) =>
-              setSelections((prev) => ({ ...prev, [item.id]: optionId }))
+            onToggle={(optionId) =>
+              toggleCheckboxOption(item.id, optionId, max)
             }
             onImageOpen={setLightboxImage}
           />
-        )
-      )}
+        );
+      })}
 
       {showShareLink && !locked && (
         <ShareSelectionLink packageId={packageId} selections={selections} />
@@ -79,6 +129,77 @@ export default function PackageItems({
 
       <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
     </div>
+  );
+}
+
+function FixedGroup({
+  item,
+  imageSize,
+  compact,
+  onImageOpen,
+}: {
+  item: PackageItem;
+  imageSize: number;
+  compact: boolean;
+  onImageOpen: (image: LightboxImage) => void;
+}) {
+  // Home-page cards start collapsed to 1 dish per category — the detail
+  // page (compact=false) always shows everything, no collapsing at all.
+  const [expanded, setExpanded] = useState(!compact);
+  const visibleOptions =
+    compact && !expanded ? item.options.slice(0, 1) : item.options;
+
+  return (
+    <fieldset className="p-2 border border-[#62662a] rounded-lg">
+      {item.label && (
+        <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground">
+          {item.label}
+        </legend>
+      )}
+      <div className="space-y-2">
+        {visibleOptions.map((option) => (
+          <FixedItemRow
+            key={option.id}
+            option={option}
+            imageSize={imageSize}
+            onImageOpen={onImageOpen}
+          />
+        ))}
+      </div>
+      <ViewMoreButton
+        compact={compact}
+        expanded={expanded}
+        total={item.options.length}
+        onToggle={() => setExpanded((prev) => !prev)}
+      />
+    </fieldset>
+  );
+}
+
+// Shown only on home-page cards, only when there's actually more than 1
+// item to reveal. Toggles both ways — expand to see the rest, and the same
+// button collapses back once expanded.
+function ViewMoreButton({
+  compact,
+  expanded,
+  total,
+  onToggle,
+}: {
+  compact: boolean;
+  expanded: boolean;
+  total: number;
+  onToggle: () => void;
+}) {
+  if (!compact || total <= 1) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="mt-2 cursor-pointer text-xs font-medium text-amber-700 hover:underline dark:text-amber-400"
+    >
+      {expanded ? "Փակել" : `Տեսնել ավելին (${total - 1})`}
+    </button>
   );
 }
 
@@ -108,7 +229,18 @@ function FixedItemRow({
   );
 }
 
-function ChoiceGroup({
+// Always-visible selection-rule badge — text comes straight from WordPress
+// (`item.info`), never authored here. No click/hover needed to see it.
+function CategoryInfo({ text }: { text: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium normal-case tracking-normal text-green-700 dark:bg-green-500/15 dark:text-green-400">
+      <Info className="h-3 w-3 shrink-0" aria-hidden="true" />
+      {text}
+    </span>
+  );
+}
+
+function RadioGroup({
   item,
   groupName,
   imageSize,
@@ -122,20 +254,25 @@ function ChoiceGroup({
   groupName: string;
   imageSize: number;
   compact: boolean;
-  selectedOptionId: string;
+  selectedOptionId: string | undefined;
   locked?: boolean;
   onSelect: (optionId: string) => void;
   onImageOpen: (image: LightboxImage) => void;
 }) {
+  const [expanded, setExpanded] = useState(!compact);
+  const visibleOptions =
+    compact && !expanded ? item.options.slice(0, 1) : item.options;
+
   return (
-    <fieldset>
+    <fieldset className="p-2 border border-[#62662a] rounded-lg">
       {item.label && (
-        <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+        <legend className="mb-2 flex flex-wrap items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
           {item.label}
+          {item.info && <CategoryInfo text={item.info} />}
         </legend>
       )}
       <div className={compact ? "space-y-2" : "grid gap-2 sm:grid-cols-2"}>
-        {item.options.map((option) => (
+        {visibleOptions.map((option) => (
           <label
             key={option.id}
             className={`flex items-center gap-3 rounded-xl border-2 border-border p-2.5 transition-colors has-checked:border-amber-500 has-checked:bg-amber-50 dark:has-checked:bg-amber-500/10 ${
@@ -172,6 +309,109 @@ function ChoiceGroup({
           </label>
         ))}
       </div>
+      <ViewMoreButton
+        compact={compact}
+        expanded={expanded}
+        total={item.options.length}
+        onToggle={() => setExpanded((prev) => !prev)}
+      />
+    </fieldset>
+  );
+}
+
+function CheckboxGroup({
+  item,
+  imageSize,
+  compact,
+  selectedOptionIds,
+  locked = false,
+  onToggle,
+  onImageOpen,
+}: {
+  item: PackageItem;
+  imageSize: number;
+  compact: boolean;
+  selectedOptionIds: string[];
+  locked?: boolean;
+  onToggle: (optionId: string) => void;
+  onImageOpen: (image: LightboxImage) => void;
+}) {
+  const max = item.max ?? item.options.length;
+  const [expanded, setExpanded] = useState(!compact);
+  const visibleOptions =
+    compact && !expanded ? item.options.slice(0, 1) : item.options;
+
+  return (
+    <fieldset className="p-2 border border-[#62662a] rounded-lg">
+      {item.label && (
+        <legend className="mb-2 flex flex-wrap items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
+          {item.label} ({selectedOptionIds.length}/{max})
+          {item.info && <CategoryInfo text={item.info} />}
+        </legend>
+      )}
+      <div className={compact ? "space-y-2" : "grid gap-2 sm:grid-cols-2"}>
+        {visibleOptions.map((option) => {
+          const checked = selectedOptionIds.includes(option.id);
+          // Recomputed fresh every render from the current selection —
+          // never cached — so a checked box is only ever disabled by
+          // `locked`, never by being "at cap" (that's what lets the guest
+          // uncheck one to free up a slot instead of getting stuck).
+          const atCap = selectedOptionIds.length >= max;
+          const disabled = locked || (!checked && atCap);
+          // Hovering a capped-out (disabled + unchecked) box shows why —
+          // reuses the same backend-authored rule text as the info icon.
+          const disabledHint = !locked && !checked && atCap ? item.info : undefined;
+
+          return (
+            <label
+              key={option.id}
+              title={disabledHint}
+              className={`flex items-center gap-3 rounded-xl border-2 border-border p-2.5 transition-colors has-checked:border-amber-500 has-checked:bg-amber-50 dark:has-checked:bg-amber-500/10 ${
+                disabled
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer hover:border-foreground/20"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={checked}
+                disabled={disabled}
+                onChange={() => {
+                  if (!disabled) onToggle(option.id);
+                }}
+                className="peer sr-only"
+              />
+              <DishImage
+                src={option.imageUrl}
+                alt={option.name}
+                size={imageSize}
+                onOpen={() =>
+                  onImageOpen({ src: option.imageUrl, alt: option.name })
+                }
+              />
+              <span className="text-sm text-foreground/80 peer-checked:font-semibold">
+                {option.name}
+              </span>
+              <span
+                aria-hidden="true"
+                className={`ml-auto flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 ${
+                  checked
+                    ? "border-amber-500 bg-amber-500"
+                    : "border-foreground/30"
+                }`}
+              >
+                {checked && <Check className="h-3 w-3 text-white" />}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+      <ViewMoreButton
+        compact={compact}
+        expanded={expanded}
+        total={item.options.length}
+        onToggle={() => setExpanded((prev) => !prev)}
+      />
     </fieldset>
   );
 }
@@ -181,13 +421,19 @@ function ShareSelectionLink({
   selections,
 }: {
   packageId: string;
-  selections: Record<string, string>;
+  selections: Record<string, string[]>;
 }) {
   const [link, setLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const handleClick = async () => {
-    const query = new URLSearchParams(selections).toString();
+    const params = new URLSearchParams();
+    for (const [itemId, optionIds] of Object.entries(selections)) {
+      for (const optionId of optionIds) {
+        params.append(itemId, optionId);
+      }
+    }
+    const query = params.toString();
     const url = `${window.location.origin}/packages/${packageId}${
       query ? `?${query}` : ""
     }`;

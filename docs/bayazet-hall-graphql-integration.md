@@ -57,11 +57,24 @@ naive assumptions — implement queries exactly as written below, not as
   taxonomy is exposed as `DishCategory`.
 - **Relationship fields return a connection, not a plain array.** Always go
   through `{ nodes { ... } }`, e.g. `includedItems { nodes { ... } }`.
-- **Within a package's `includedItems`, order = default selection.** For any
-  `DishCategory` where `selectionType` is `single_select`, the first dish in
-  the array belonging to that category is the pre-selected default on load.
-  Group dishes by `dishCategories.nodes[0].slug` client-side to reconstruct
-  the category groupings (Salad, Main dish, etc.) shown in the UI.
+- **Within a package's `includedItems`, order = default selection AND
+  display order.** For any `DishCategory` where `selectionType` is `1` or
+  higher, the first dish(es) in the array belonging to that category are
+  the pre-selected default(s) on load. Group dishes by
+  `dishCategories.nodes[0].slug` client-side to reconstruct the category
+  groupings (Salad, Main dish, etc.) shown in the UI — **categories render
+  in the exact order they first appear in `includedItems`, with no
+  client-side re-sorting** (there's no `displayOrder` field; the backend
+  array order is authoritative).
+- **`selectionType` is an Int, not a string enum**: `0` = fixed/included, no
+  guest choice; `1` = guest picks exactly 1 (radio); `2` or higher = guest
+  picks exactly that many (checkbox, capped at that count).
+- **`DishCategory.info`** is free-text selection-rule copy (e.g. "Ընտրեք
+  ցանկացած 2-ը") shown next to a radio/checkbox category's name — an empty
+  string means nothing is shown. Never construct this text on the frontend.
+- **`DishCategory.showInFront`** (Boolean) — categories with `false` are
+  dropped entirely from the client-side grouping and never rendered, even
+  though their dishes are still present in `includedItems`.
 
 ## 4. Queries
 
@@ -125,19 +138,25 @@ image, per the current site-wide-text decision.
 query GetServices {
   services(first: 20, where: { orderby: { field: MENU_ORDER, order: ASC } }) {
     nodes {
+      id
       title
-      serviceFields {
+      serviceIcon {
         icon {
           node {
             sourceUrl
             altText
           }
         }
+        link
       }
     }
   }
 }
 ```
+
+Note: the field is `serviceIcon`, not `serviceFields` — confirmed against the live schema (an earlier version of this doc had it wrong).
+
+`serviceIcon.link` is optional free text (empty string when unset) — when present, the badge opens it in a new tab; when empty/absent, the badge stays non-interactive (a plain `<div>`, not a link).
 
 ### 4.4 Packages (with grouped dishes)
 
@@ -150,7 +169,7 @@ query GetPackages {
         price
         description
         highlighted
-        includedItems {
+        includedItems(first: 100) {
           nodes {
             ... on Dish {
               title
@@ -165,7 +184,8 @@ query GetPackages {
                   name
                   slug
                   selectionType
-                  displayOrder
+                  info
+                  showInFront
                 }
               }
             }
@@ -178,12 +198,20 @@ query GetPackages {
 ```
 
 **Client-side transform needed:** the API returns a flat list of dishes per
-package. Group `includedItems.nodes` by `dishCategories.nodes[0].slug`, sort
-groups by `displayOrder`, and within each group:
-- if `selectionType === 'single_select'` → render as radio options, first
-  item in the array pre-selected
-- if `selectionType === 'fixed_included'` → render as a plain checkmarked
-  list, no interaction
+package. Group `includedItems.nodes` by `dishCategories.nodes[0].slug`, in
+the exact order categories first appear (no re-sorting), dropping any
+category where `showInFront === false`. Every surviving category renders
+its `name` as a heading regardless of type, and within each group, branch
+on `selectionType` (an Int):
+- `0` → render as a plain checkmarked list, no interaction
+- `1` → render as radio options, first item in the array pre-selected. Show
+  an info icon next to the heading (with the category's `info` text) if
+  `info` is non-empty.
+- `2` or higher → render as checkboxes, capped at exactly `selectionType`
+  selections; pre-select the first `selectionType` dishes as defaults, and
+  disable any unselected checkbox once the cap is reached (the guest must
+  uncheck one before checking another). Same info icon as radio when `info`
+  is non-empty; hovering a capped-out checkbox also surfaces that same text.
 
 ### 4.5 Gallery
 

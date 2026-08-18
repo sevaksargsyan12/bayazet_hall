@@ -1,0 +1,27 @@
+query TestNewMenu {
+  packages(where: { orderby: { field: MENU_ORDER, order: ASC } }) {
+    nodes {
+      title
+      packageDetails {
+        price
+        description
+        highlighted
+        includedItems(first: 100) {
+          nodes {
+            ... on Dish {
+              title
+              dishCategories {
+                nodes {
+                  name
+                  slug
+                  selectionType
+                  displayOrder
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

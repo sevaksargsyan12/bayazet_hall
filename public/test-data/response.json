@@ -1,0 +1,1355 @@
+{
+  "packages": {
+    "nodes": [
+      {
+        "title": "Ռոյալ",
+        "packageDetails": {
+          "price": 24000,
+          "description": "Լիարժեք շքեղ փաթեթ. ձեր հատուկ օրվա համար",
+          "highlighted": false,
+          "includedItems": {
+            "nodes": [
+              {
+                "title": "Խոզի և գառի խորոված՝ կարտոֆիլով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Քյուֆթա",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լոր և Ճուտ՝ բանջարեղենի գրիլով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ստերլետ՝ դրած կամ խորոված",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Բայազետ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Եգիպտացորենով աղցան",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կեսար",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Մայրաքաղաքային (Ստալիչնի)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սմբուկով աղցան",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սնկային դրախտ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ռոքֆոր, Լոռի, Գաուդա, Յանտար, թել պանիր, բոխչա",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Պանրի տեսականի",
+                      "slug": "cheese-platter",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կատար, խոզի կաշի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մարինադներ և սառը նախուտեստներ",
+                      "slug": "marinad-and-cold-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Մարինացված սունկ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մարինադներ և սառը նախուտեստներ",
+                      "slug": "marinad-and-cold-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լոլիկ, վարունգ, ծիծակ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թարմ բանջարեղեն և կանաչի",
+                      "slug": "fresh-vegies",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կանաչի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թարմ բանջարեղեն և կանաչի",
+                      "slug": "fresh-vegies",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "7 տեսակի մսային տեսականի՝ ֆիլե, պաշինա, շեյկա, ապխտած երշիկ, բաստուրմա, սուջուխ, ռուլետ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մսային սառը տեսականի",
+                      "slug": "cold-meat-platter",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Թթուների տեսականի՝ բոխի, շուշան, բամիա, ծիծակ, վարունգ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թթուներ և ձիթապտուղ",
+                      "slug": "pickles-and-olives",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ձիթապտղի 3 տեսակի տեսականի + կիտրոն",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թթուներ և ձիթապտուղ",
+                      "slug": "pickles-and-olives",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "«Մոսկովսկի» և իտալական կոնֆետների տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Քաղցրեղեն",
+                      "slug": "sweets",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Պրեմիում որակի ընդեղենի տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ընդեղեն",
+                      "slug": "nuts",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լավաշ և հաց",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հաց",
+                      "slug": "bread",
+                      "selectionType": 0,
+                      "displayOrder": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Roselin 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Senator 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Белая Березка 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Русское Серебро 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Campa հյութ, Կոմպոտ՝ ապակե շշերով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Coca-Cola, Fanta, Sprite՝ ապակե շշերով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լիմոնադ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Հանքային ջուր և ջուր՝ Բջնի / Նոյ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Գինի՝ Վերնաշեն / Արմենիա (անապակ, քաղցր, սպիտակ, կիսաքաղցր)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ",
+                      "slug": "alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կոնյակ՝ Արարատ 5*",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ",
+                      "slug": "alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Իշխանի իկրա (խավիար)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ձկնային և ծովամթերքի նախուտեստներ",
+                      "slug": "seafood-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ձկան նախուտեստների տեսականի՝ ծովախեցգետնով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ձկնային և ծովամթերքի նախուտեստներ",
+                      "slug": "seafood-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սուշի և ռոլ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Սուշի և ռոլեր",
+                      "slug": "sushi-and-rolls",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Փախլավա",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Քաղցրեղեն",
+                      "slug": "sweets",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Անանաս",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մրգեր",
+                      "slug": "fruits",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "title": "Պրեմիում",
+        "packageDetails": {
+          "price": 19000,
+          "description": "Հարուստ ընտրանի հատուկ առիթների համար",
+          "highlighted": true,
+          "includedItems": {
+            "nodes": [
+              {
+                "title": "Խոզի խորոված՝ կարտոֆիլով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Քյուֆթա",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ստերլետ՝ դրած կամ խորոված",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Բայազետ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Եգիպտացորենով աղցան",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կեսար",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Մայրաքաղաքային (Ստալիչնի)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սմբուկով աղցան",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սնկային դրախտ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ռոքֆոր, Լոռի, Գաուդա, Յանտար, թել պանիր, բոխչա",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Պանրի տեսականի",
+                      "slug": "cheese-platter",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կատար, խոզի կաշի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մարինադներ և սառը նախուտեստներ",
+                      "slug": "marinad-and-cold-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Մարինացված սունկ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մարինադներ և սառը նախուտեստներ",
+                      "slug": "marinad-and-cold-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լոլիկ, վարունգ, ծիծակ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թարմ բանջարեղեն և կանաչի",
+                      "slug": "fresh-vegies",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կանաչի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թարմ բանջարեղեն և կանաչի",
+                      "slug": "fresh-vegies",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "7 տեսակի մսային տեսականի՝ ֆիլե, պաշինա, շեյկա, ապխտած երշիկ, բաստուրմա, սուջուխ, ռուլետ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մսային սառը տեսականի",
+                      "slug": "cold-meat-platter",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Թթուների տեսականի՝ բոխի, շուշան, բամիա, ծիծակ, վարունգ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թթուներ և ձիթապտուղ",
+                      "slug": "pickles-and-olives",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ձիթապտղի 3 տեսակի տեսականի + կիտրոն",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թթուներ և ձիթապտուղ",
+                      "slug": "pickles-and-olives",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "«Մոսկովսկի» և իտալական կոնֆետների տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Քաղցրեղեն",
+                      "slug": "sweets",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Պրեմիում որակի ընդեղենի տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ընդեղեն",
+                      "slug": "nuts",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լավաշ և հաց",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հաց",
+                      "slug": "bread",
+                      "selectionType": 0,
+                      "displayOrder": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Roselin 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Senator 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Белая Березка 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Русское Серебро 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Campa հյութ, Կոմպոտ՝ ապակե շշերով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Coca-Cola, Fanta, Sprite՝ ապակե շշերով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լիմոնադ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Հանքային ջուր և ջուր՝ Բջնի / Նոյ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Գինի՝ Վերնաշեն / Արմենիա (անապակ, քաղցր, սպիտակ, կիսաքաղցր)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ",
+                      "slug": "alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կոնյակ՝ Արարատ 5*",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ",
+                      "slug": "alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Իշխանի իկրա (խավիար)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ձկնային և ծովամթերքի նախուտեստներ",
+                      "slug": "seafood-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ձկան նախուտեստների տեսականի՝ ծովախեցգետնով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ձկնային և ծովամթերքի նախուտեստներ",
+                      "slug": "seafood-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սեզոնային մրգերի պրեմիում/գոլդ տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մրգեր",
+                      "slug": "fruits",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "title": "Ստանդարտ",
+        "packageDetails": {
+          "price": 16000,
+          "description": "Իդեալական ընտրություն կանոնավոր միջոցառումների համար",
+          "highlighted": false,
+          "includedItems": {
+            "nodes": [
+              {
+                "title": "Խոզի խորոված՝ կարտոֆիլով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Քյուֆթա",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հիմնական ուտեստներ",
+                      "slug": "main-dish",
+                      "selectionType": 0,
+                      "displayOrder": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Իշխանի խորոված",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ընտրովի հիմնական ուտեստ",
+                      "slug": "selectable-main-dish",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ճուտ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ընտրովի հիմնական ուտեստ",
+                      "slug": "selectable-main-dish",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Բայազետ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Եգիպտացորենով աղցան",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կեսար",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Մայրաքաղաքային (Ստալիչնի)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սմբուկով աղցան",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սնկային դրախտ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Աղցաններ",
+                      "slug": "salad",
+                      "selectionType": 2,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ռոքֆոր, Լոռի, Գաուդա, Յանտար, թել պանիր, բոխչա",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Պանրի տեսականի",
+                      "slug": "cheese-platter",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կատար, խոզի կաշի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մարինադներ և սառը նախուտեստներ",
+                      "slug": "marinad-and-cold-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Մարինացված սունկ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մարինադներ և սառը նախուտեստներ",
+                      "slug": "marinad-and-cold-appetizers",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լոլիկ, վարունգ, ծիծակ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թարմ բանջարեղեն և կանաչի",
+                      "slug": "fresh-vegies",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կանաչի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թարմ բանջարեղեն և կանաչի",
+                      "slug": "fresh-vegies",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "7 տեսակի մսային տեսականի՝ ֆիլե, պաշինա, շեյկա, ապխտած երշիկ, բաստուրմա, սուջուխ, ռուլետ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մսային սառը տեսականի",
+                      "slug": "cold-meat-platter",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Թթուների տեսականի՝ բոխի, շուշան, բամիա, ծիծակ, վարունգ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թթուներ և ձիթապտուղ",
+                      "slug": "pickles-and-olives",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Ձիթապտղի 3 տեսակի տեսականի + կիտրոն",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Թթուներ և ձիթապտուղ",
+                      "slug": "pickles-and-olives",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "«Մոսկովսկի» և իտալական կոնֆետների տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Քաղցրեղեն",
+                      "slug": "sweets",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Պրեմիում որակի ընդեղենի տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ընդեղեն",
+                      "slug": "nuts",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լավաշ և հաց",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Հաց",
+                      "slug": "bread",
+                      "selectionType": 0,
+                      "displayOrder": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Roselin 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Senator 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Белая Березка 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Русское Серебро 0,5լ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ (Օղի)",
+                      "slug": "alcoholic-drinks-vodka",
+                      "selectionType": 1,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Campa հյութ, Կոմպոտ՝ ապակե շշերով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Coca-Cola, Fanta, Sprite՝ ապակե շշերով",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Լիմոնադ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Հանքային ջուր և ջուր՝ Բջնի / Նոյ",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ոչ ալկոհոլային խմիչքներ",
+                      "slug": "non-alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Գինի՝ Վերնաշեն / Արմենիա (անապակ, քաղցր, սպիտակ, կիսաքաղցր)",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ",
+                      "slug": "alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Կոնյակ՝ Արարատ 5*",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Ալկոհոլային խմիչքներ",
+                      "slug": "alcoholic-drinks",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "Սեզոնային մրգերի պրեմիում/գոլդ տեսականի",
+                "dishCategories": {
+                  "nodes": [
+                    {
+                      "name": "Մրգեր",
+                      "slug": "fruits",
+                      "selectionType": 0,
+                      "displayOrder": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -8,6 +8,7 @@ interface GetServicesResponse {
       title: string;
       serviceIcon: {
         icon: { node: { sourceUrl: string; altText: string } } | null;
+        link: string | null;
       } | null;
     }[];
   };
@@ -31,6 +32,7 @@ const GET_SERVICES = /* GraphQL */ `
               altText
             }
           }
+          link
         }
       }
     }
@@ -48,5 +50,6 @@ export async function getServices(): Promise<ServiceBadgeData[]> {
           alt: service.serviceIcon.icon.node.altText || service.title,
         }
       : undefined,
+    link: service.serviceIcon?.link || undefined,
   }));
 }
