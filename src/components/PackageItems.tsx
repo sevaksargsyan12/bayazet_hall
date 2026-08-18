@@ -142,9 +142,9 @@ function FixedGroup({
   onImageOpen: (image: LightboxImage) => void;
 }) {
   return (
-    <fieldset>
+    <fieldset className="p-2 border border-[#dfe2b2] rounded-lg">
       {item.label && (
-        <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+        <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground">
           {item.label}
         </legend>
       )}
@@ -238,9 +238,9 @@ function RadioGroup({
   onImageOpen: (image: LightboxImage) => void;
 }) {
   return (
-    <fieldset>
+    <fieldset className="p-2 border border-[#dfe2b2] rounded-lg">
       {item.label && (
-        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
           {item.label}
           {item.info && <InfoTooltip text={item.info} />}
         </legend>
@@ -307,9 +307,9 @@ function CheckboxGroup({
   const max = item.max ?? item.options.length;
 
   return (
-    <fieldset>
+    <fieldset className="p-2 border border-[#dfe2b2] rounded-lg">
       {item.label && (
-        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground">
           {item.label} ({selectedOptionIds.length}/{max})
           {item.info && <InfoTooltip text={item.info} />}
         </legend>
