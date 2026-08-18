@@ -8,7 +8,13 @@ interface WPDishCategory {
   // 0 = fixed/no choice, 1 = radio (pick exactly 1), 2+ = checkbox (pick
   // exactly that many). Was a string enum, now an Int on the WP side.
   selectionType: number;
-  displayOrder: number;
+  // Selection-rule text shown next to selectable (radio/checkbox) category
+  // labels, e.g. "Ընտրեք ցանկացած 2-ը" — empty string if there's nothing
+  // to show. Authored in WP, never constructed on the frontend.
+  info: string;
+  // Whether this category should appear on the public package pages at
+  // all — some categories may exist for backend bookkeeping only.
+  showInFront: boolean;
 }
 
 interface WPDish {
@@ -74,7 +80,8 @@ const GET_PACKAGES = /* GraphQL */ `
                     name
                     slug
                     selectionType
-                    displayOrder
+                    info
+                    showInFront
                   }
                 }
               }
@@ -90,22 +97,24 @@ const GET_PACKAGES = /* GraphQL */ `
  * Groups a package's flat dish list into the fixed/radio/checkbox item
  * shape our components render:
  *
- * - Bucket dishes by their first category's slug, sort buckets by
- *   `displayOrder`.
- * - `selectionType === 0` (fixed) categories become ONE fixed-type
- *   PackageItem PER DISH, not grouped — a category can hold multiple
- *   always-included dishes (e.g. the Royal package's "cold-appetizers"
- *   bucket has 3), and the fixed-item renderer only ever shows a single
- *   dish per item, so grouping them would silently drop all but the first.
- * - `selectionType === 1` (radio) categories become ONE radio-type
- *   PackageItem holding every dish in that bucket as selectable `options`
- *   (first one is the pre-selected default — PackageItems.tsx implements
- *   this).
- * - `selectionType >= 2` (checkbox) categories become ONE checkbox-type
- *   PackageItem with `max` set to the required pick count — capped to the
- *   bucket's actual dish count in case WP data asks for more picks than
- *   there are dishes to pick from. The first `max` dishes are the
- *   pre-selected defaults.
+ * - Bucket dishes by their first category's slug, in the exact order
+ *   categories first appear in `dishes` — no re-sorting. The backend
+ *   dictates ordering entirely now (no more "selectable categories float
+ *   to the top" behavior).
+ * - A category with `showInFront === false` is dropped entirely — it
+ *   exists for backend bookkeeping only, never shown on the public site.
+ * - Every surviving category becomes exactly ONE PackageItem carrying its
+ *   name as `label` (shown as a heading regardless of type) and, for
+ *   radio/checkbox, its `info` selection-rule text — so unlike before,
+ *   fixed categories are grouped too instead of one item per dish.
+ * - `selectionType === 0` → "fixed": all dishes in the bucket, no
+ *   interaction.
+ * - `selectionType === 1` → "radio": pick exactly 1, first dish
+ *   pre-selected as the default.
+ * - `selectionType >= 2` → "checkbox": `max` set to the required pick
+ *   count, capped to the bucket's actual dish count in case WP data asks
+ *   for more picks than there are dishes to pick from. The first `max`
+ *   dishes are the pre-selected defaults.
  * - A missing/null `selectionType` is treated as `0` (fixed) — the safe
  *   default that never accidentally forces an incomplete choice UI.
  */
@@ -115,7 +124,7 @@ function groupDishesByCategory(dishes: WPDish[]): PackageItem[] {
 
   for (const dish of dishes) {
     const category = dish.dishCategories.nodes[0];
-    if (!category) continue;
+    if (!category || category.showInFront === false) continue;
     if (!buckets.has(category.slug)) {
       buckets.set(category.slug, { category, dishes: [] });
       bucketOrder.push(category.slug);
@@ -123,13 +132,10 @@ function groupDishesByCategory(dishes: WPDish[]): PackageItem[] {
     buckets.get(category.slug)!.dishes.push(dish);
   }
 
-  const sortedBuckets = bucketOrder
-    .map((slug) => buckets.get(slug)!)
-    .sort((a, b) => a.category.displayOrder - b.category.displayOrder);
-
   const items: PackageItem[] = [];
 
-  for (const { category, dishes: bucketDishes } of sortedBuckets) {
+  for (const slug of bucketOrder) {
+    const { category, dishes: bucketDishes } = buckets.get(slug)!;
     const options: DishOption[] = bucketDishes.map((dish) => ({
       id: dish.id,
       name: dish.title,
@@ -137,20 +143,21 @@ function groupDishesByCategory(dishes: WPDish[]): PackageItem[] {
     }));
 
     const selectionType = Math.max(0, category.selectionType ?? 0);
+    const info = category.info || undefined;
 
     if (selectionType === 0) {
-      options.forEach((option, index) => {
-        items.push({
-          id: `${category.slug}-${index}`,
-          type: "fixed",
-          options: [option],
-        });
+      items.push({
+        id: category.slug,
+        type: "fixed",
+        label: category.name,
+        options,
       });
     } else if (selectionType === 1) {
       items.push({
         id: category.slug,
         type: "radio",
         label: category.name,
+        info,
         options,
       });
     } else {
@@ -158,6 +165,7 @@ function groupDishesByCategory(dishes: WPDish[]): PackageItem[] {
         id: category.slug,
         type: "checkbox",
         label: category.name,
+        info,
         max: Math.min(selectionType, options.length),
         options,
       });

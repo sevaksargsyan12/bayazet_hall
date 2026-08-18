@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Link2, Lock } from "lucide-react";
+import { Check, Info, Link2, Lock } from "lucide-react";
 import DishImage from "@/components/DishImage";
 import Lightbox from "@/components/Lightbox";
 import type { PackageItem } from "@/data/packages";
@@ -79,9 +79,9 @@ export default function PackageItems({
       {items.map((item) => {
         if (item.type === "fixed") {
           return (
-            <FixedItemRow
+            <FixedGroup
               key={item.id}
-              option={item.options[0]}
+              item={item}
               imageSize={imageSize}
               onImageOpen={setLightboxImage}
             />
@@ -132,6 +132,36 @@ export default function PackageItems({
   );
 }
 
+function FixedGroup({
+  item,
+  imageSize,
+  onImageOpen,
+}: {
+  item: PackageItem;
+  imageSize: number;
+  onImageOpen: (image: LightboxImage) => void;
+}) {
+  return (
+    <fieldset>
+      {item.label && (
+        <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+          {item.label}
+        </legend>
+      )}
+      <div className="space-y-2">
+        {item.options.map((option) => (
+          <FixedItemRow
+            key={option.id}
+            option={option}
+            imageSize={imageSize}
+            onImageOpen={onImageOpen}
+          />
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
 function FixedItemRow({
   option,
   imageSize,
@@ -158,6 +188,36 @@ function FixedItemRow({
   );
 }
 
+// Click-to-toggle popover (works on both mouse and touch, unlike a
+// hover-only tooltip) explaining a category's selection rule — text comes
+// straight from WordPress (`item.info`), never authored here.
+function InfoTooltip({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <span className="relative inline-flex">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        onBlur={() => setOpen(false)}
+        title={text}
+        aria-label="Տեղեկատվություն ընտրության մասին"
+        className="text-foreground/40 transition-colors hover:text-foreground/70"
+      >
+        <Info className="h-3.5 w-3.5" aria-hidden="true" />
+      </button>
+      {open && (
+        <span
+          role="tooltip"
+          className="absolute left-1/2 top-full z-20 mt-1.5 w-48 -translate-x-1/2 rounded-lg border border-border bg-surface p-2 text-xs font-normal normal-case tracking-normal text-foreground/80 shadow-lg"
+        >
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function RadioGroup({
   item,
   groupName,
@@ -180,8 +240,9 @@ function RadioGroup({
   return (
     <fieldset>
       {item.label && (
-        <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground/50">
           {item.label}
+          {item.info && <InfoTooltip text={item.info} />}
         </legend>
       )}
       <div className={compact ? "space-y-2" : "grid gap-2 sm:grid-cols-2"}>
@@ -248,8 +309,9 @@ function CheckboxGroup({
   return (
     <fieldset>
       {item.label && (
-        <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground/50">
+        <legend className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-foreground/50">
           {item.label} ({selectedOptionIds.length}/{max})
+          {item.info && <InfoTooltip text={item.info} />}
         </legend>
       )}
       <div className={compact ? "space-y-2" : "grid gap-2 sm:grid-cols-2"}>
@@ -261,10 +323,14 @@ function CheckboxGroup({
           // uncheck one to free up a slot instead of getting stuck).
           const atCap = selectedOptionIds.length >= max;
           const disabled = locked || (!checked && atCap);
+          // Hovering a capped-out (disabled + unchecked) box shows why —
+          // reuses the same backend-authored rule text as the info icon.
+          const disabledHint = !locked && !checked && atCap ? item.info : undefined;
 
           return (
             <label
               key={option.id}
+              title={disabledHint}
               className={`flex items-center gap-3 rounded-xl border-2 border-border p-2.5 transition-colors has-checked:border-amber-500 has-checked:bg-amber-50 dark:has-checked:bg-amber-500/10 ${
                 disabled
                   ? "cursor-not-allowed opacity-50"

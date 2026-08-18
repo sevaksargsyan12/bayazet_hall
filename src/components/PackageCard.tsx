@@ -4,7 +4,6 @@ import type { Package } from "@/data/packages";
 import { formatAmd } from "@/lib/format";
 import { SITE_URL } from "@/lib/constants";
 import PackageItems from "@/components/PackageItems";
-import ShineOnView from "@/components/ShineOnView";
 
 export default function PackageCard({ pkg }: { pkg: Package }) {
   return (
@@ -23,7 +22,10 @@ export default function PackageCard({ pkg }: { pkg: Package }) {
               : "border-border bg-surface shadow-md shadow-amber-200/50 hover:border-foreground/20 dark:shadow-amber-500/10"
           }`}
         >
-          <ShineOnView />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-8 -top-8 h-28 w-28 rounded-full bg-amber-400/30 blur-2xl dark:bg-amber-400/20"
+          />
 
           <h3 className="text-2xl font-bold">{pkg.name}</h3>
           <p className="mt-2 text-sm text-foreground/60">{pkg.description}</p>

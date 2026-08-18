@@ -7,7 +7,9 @@ export interface DishOption {
 export interface PackageItem {
   id: string;
   type: "fixed" | "radio" | "checkbox";
-  label?: string; // used for "radio"/"checkbox", e.g. "Ընտրեք աղցան"
+  label?: string; // the category name, shown as a heading for every type
+  info?: string; // selection-rule text, e.g. "Ընտրեք ցանկացած 2-ը" — only
+  // used for "radio"/"checkbox" (comes straight from WordPress)
   max?: number; // only set when type is "checkbox" — required pick count,
   // already capped to <= options.length by groupDishesByCategory
   options: DishOption[]; // 1 item if fixed, multiple otherwise
