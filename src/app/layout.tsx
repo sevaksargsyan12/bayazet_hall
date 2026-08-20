@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_Armenian } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import JsonLd from "@/components/JsonLd";
+import Analytics from "@/components/Analytics";
 import { getSiteSettings } from "@/lib/queries/site-settings";
 import {
   DEFAULT_META_DESCRIPTION,
@@ -98,6 +99,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans">
         <JsonLd data={businessSchema} />
+        <Analytics />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
