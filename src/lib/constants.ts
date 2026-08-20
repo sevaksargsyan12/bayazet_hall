@@ -3,6 +3,11 @@ export const SITE_URL =
 
 export const SITE_NAME = "Bayazet Hall";
 
+// Bayazet Hall's Google Place ID — opens Google's "write a review" flow
+// directly, rather than the general Maps listing page.
+export const GOOGLE_PLACE_ID = "ChIJk-Th0q8NQEAR4u31Hnu6dUs";
+export const GOOGLE_REVIEWS_URL = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
+
 export const DEFAULT_META_DESCRIPTION =
   "Bayazet Hall — հարսանիքների և միջոցառումների սրահ Գավառում, Հայաստանում։ Փաթեթներ, գներ և առցանց ամրագրում։";
 

@@ -1,5 +1,6 @@
 import { MapPin, Phone, Users } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import GoogleReviewsLink from "@/components/GoogleReviewsLink";
 import { getSiteSettings } from "@/lib/queries/site-settings";
 
 export default async function Contact() {
@@ -43,6 +44,9 @@ export default async function Contact() {
                 aria-hidden="true"
               />
               <span>{siteSettings.contactCapacityNote}</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <GoogleReviewsLink />
             </li>
           </ul>
         </div>
